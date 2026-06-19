@@ -1,0 +1,16 @@
+<div class="card card-border bg-base-300 w-96 mt-5">
+  <div class="card-body">
+      <h2>{{ questions()[currentQuestionIndex]?.question }}</h2>
+      @if (answer()) {
+        <p>
+          {{ questions()[currentQuestionIndex]?.correct_answer }}
+        </p>
+      }
+    
+    <div class="card-actions justify-around">
+      <button (click)="previousQuestion()" class="btn btn-primary">Previous</button>
+      <button (click)="showAnswer()" class="btn btn-primary">Show Answer</button>
+      <button (click)="nextQuestion()" class="btn btn-primary">Next</button>
+    </div>
+  </div>
+</div>
