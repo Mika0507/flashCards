@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, computed, inject, OnInit, output, signal } from '@angular/core';
 import { Result } from '../../interfaces/questions.interface';
 import { QuestionsService } from '../../services/questionsService';
 import { tap } from 'rxjs/internal/operators/tap';
@@ -14,7 +14,13 @@ export class Cards implements OnInit {
   public service = inject(QuestionsService);
 
   public questions = signal<Result[]>([]);
-  public currentQuestionIndex = 0;
+  public currentQuestionIndex = signal<number>(0);
+  // public progresoActual = 0;
+
+  public progreso = computed(()=> {
+    if(this.questions().length === 0) return 0;
+    return ((this.currentQuestionIndex() + 1) / this.questions().length) * 100;
+  })
 
   ngOnInit() {
     this.questionsAndAnswers();
@@ -40,24 +46,37 @@ export class Cards implements OnInit {
       )
       .subscribe((response) => {
         this.questions.set(response.results);
+        
       });
   }
 
+  // aumentarProgreso () {
+  //   if(this.progreso < 100) {
+  //     this.progresoActual+= 10;
+  //     document.getElementById("miBarra")!.style.width = this.progresoActual + "%";
+  //   }
+  // }
+
   public nextQuestion() {
     this.hideAnswer();
-    if (this.currentQuestionIndex < this.questions().length - 1) {
-      this.currentQuestionIndex++;
+    const currentIndex = this.currentQuestionIndex();
+    if (currentIndex < this.questions().length - 1) {
+      this.currentQuestionIndex.set(currentIndex + 1);
+      console.log('cuantas preguntas estoy viendo?', this.currentQuestionIndex);
+      
+      // this.aumentarProgreso();
     } else {
-      this.currentQuestionIndex = 0;
+      this.currentQuestionIndex.set(currentIndex + 1);
     }
   }
 
   public previousQuestion() {
     this.hideAnswer();
-    if (this.currentQuestionIndex > 0) {
-      this.currentQuestionIndex--;
+    const currentIndex = this.currentQuestionIndex();
+    if (currentIndex > 0) {
+      this.currentQuestionIndex.set(currentIndex - 1);
     } else {
-      this.currentQuestionIndex = this.questions().length - 1;
+      this.currentQuestionIndex.set(this.questions().length - 1);
     }
   }
 }

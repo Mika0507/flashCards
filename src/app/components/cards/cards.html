@@ -1,13 +1,22 @@
-<div class="card card-border bg-base-300 w-96 mt-5">
-  <div class="card-body">
-      <h2>{{ questions()[currentQuestionIndex]?.question }}</h2>
+
+<div class="contenedor-barra">
+  <div class="barra-progreso" id="miBarra" [style.width]="this.progreso() + '%'"></div>
+</div>
+<div class="card card-border bg-base-300 w-96 mt-5 h-66">
+  <div class="card-body flex-1">
+    @if(this.currentQuestionIndex() < questions().length) {
+
+      <h2>{{ questions()[this.currentQuestionIndex()]?.question }}</h2>
       @if (answer()) {
         <p>
-          {{ questions()[currentQuestionIndex]?.correct_answer }}
+          {{ questions()[this.currentQuestionIndex()]?.correct_answer }}
         </p>
       }
+    } @else {
+      <p>¡¡Ya has visto todas las preguntas!!</p>
+    }
     
-    <div class="card-actions justify-around">
+    <div class="card-actions justify-around mt-auto">
       <button (click)="previousQuestion()" class="btn btn-primary">Previous</button>
       <button (click)="showAnswer()" class="btn btn-primary">Show Answer</button>
       <button (click)="nextQuestion()" class="btn btn-primary">Next</button>

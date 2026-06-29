@@ -1,0 +1,13 @@
+.contenedor-barra {
+  width: 100%;
+  background-color: #44322b;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.barra-progreso {
+  width: 0%;
+  height: 10px;
+  background-color: #cc8f55;
+  transition: width 0.4s ease-in-out; /* Transición suave */
+}
